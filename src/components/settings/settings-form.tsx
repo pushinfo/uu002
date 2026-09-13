@@ -25,7 +25,7 @@ export function SettingsForm() {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    updatePreferences(form);
+    updatePreferences({ ...form, theme: preferences.theme });
     setDraft(null);
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2400);
@@ -97,12 +97,10 @@ export function SettingsForm() {
             <label className="grid gap-1.5 text-sm">
               <span className="font-medium">主题</span>
               <Select
-                value={form.theme}
-                onChange={(event) => {
-                  const theme = event.target.value as Preferences["theme"];
-                  patch({ theme });
-                  setTheme(theme);
-                }}
+                value={preferences.theme}
+                onChange={(event) =>
+                  setTheme(event.target.value as Preferences["theme"])
+                }
               >
                 <option value="light">浅色</option>
                 <option value="dark">深色</option>
