@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${notoSansSC.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full font-sans">
+      <body className="min-h-full font-sans" suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{
             __html: `try{var p=JSON.parse(localStorage.getItem("qingshu.preferences")||"{}");if(p.theme==="dark")document.documentElement.classList.add("dark");if(p.density)document.body.dataset.density=p.density;}catch(e){}`,
