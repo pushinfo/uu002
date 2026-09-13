@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Noto_Sans_SC } from "next/font/google";
+import { InboxProvider } from "@/providers/inbox-provider";
 import { PreferencesProvider } from "@/providers/preferences-provider";
 import { AppShell } from "@/components/layout/app-shell";
 import "./globals.css";
@@ -42,7 +43,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           }}
         />
         <PreferencesProvider>
-          <AppShell>{children}</AppShell>
+          <InboxProvider>
+            <AppShell>{children}</AppShell>
+          </InboxProvider>
         </PreferencesProvider>
       </body>
     </html>

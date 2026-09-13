@@ -13,6 +13,14 @@ export function formatPercent(value: number, fractionDigits = 1) {
   return `${value.toFixed(fractionDigits)}%`;
 }
 
+export function formatYuan(value: number) {
+  return new Intl.NumberFormat("zh-CN", {
+    style: "currency",
+    currency: "CNY",
+    minimumFractionDigits: 2,
+  }).format(value);
+}
+
 export function initials(name: string) {
   const parts = name
     .replace(/[^\p{L}\p{N}\s]/gu, "")

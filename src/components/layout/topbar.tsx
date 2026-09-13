@@ -1,13 +1,14 @@
 "use client";
 
 import { Bell, Menu, Moon, Search, Sun } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
 import { getNavItem } from "@/lib/nav";
-import { notifications } from "@/lib/mock-data";
+import { useInbox } from "@/providers/inbox-provider";
 import { usePreferences } from "@/providers/preferences-provider";
 
 type TopbarProps = {
@@ -19,6 +20,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   const router = useRouter();
   const current = getNavItem(pathname);
   const { preferences, setTheme } = usePreferences();
+  const { messages, unreadCount, isRead, markRead } = useInbox();
   const [openNotifications, setOpenNotifications] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -83,7 +85,9 @@ export function Topbar({ onMenuClick }: TopbarProps) {
           onClick={() => setOpenNotifications((open) => !open)}
         >
           <Bell className="size-4" />
-          <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />
+          {unreadCount > 0 ? (
+            <span className="absolute top-1.5 right-1.5 size-1.5 rounded-full bg-primary" />
+          ) : null}
         </Button>
         {openNotifications ? (
           <div className="absolute top-11 right-0 z-30 w-80 rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow)]">
@@ -98,21 +102,35 @@ export function Topbar({ onMenuClick }: TopbarProps) {
               </button>
             </div>
             <div className="space-y-2">
-              {notifications.map((item) => (
-                <div
+              {messages.slice(0, 3).map((item) => (
+                <button
                   key={item.id}
-                  className="rounded-xl bg-background px-3 py-2.5"
+                  type="button"
+                  className="w-full rounded-xl bg-background px-3 py-2.5 text-left"
+                  onClick={() => {
+                    markRead(item.id);
+                    setOpenNotifications(false);
+                    router.push("/inbox");
+                  }}
                 >
-                  <p className="text-sm font-medium">{item.title}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">
-                    {item.body}
+                  <p className="text-sm font-medium">
+                    {!isRead(item.id) ? (
+                      <span className="mr-1.5 inline-block size-1.5 rounded-full bg-primary" />
+                    ) : null}
+                    {item.title}
                   </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">
-                    {item.time}
-                  </p>
-                </div>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{item.body}</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">{item.time}</p>
+                </button>
               ))}
             </div>
+            <Link
+              href="/inbox"
+              onClick={() => setOpenNotifications(false)}
+              className="mt-2 block px-1 pt-1 text-xs font-medium text-primary"
+            >
+              打开通知中心
+            </Link>
           </div>
         ) : null}
       </div>
