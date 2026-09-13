@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useLayoutEffect,
   useMemo,
   useSyncExternalStore,
   type ReactNode,
@@ -112,6 +113,10 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     }),
     [preferences, setTheme, updatePreferences],
   );
+
+  useLayoutEffect(() => {
+    applyAppearance(preferences);
+  }, [preferences]);
 
   return (
     <PreferencesContext.Provider value={value}>

@@ -14,7 +14,7 @@ import {
 } from "@/providers/preferences-provider";
 
 export function SettingsForm() {
-  const { preferences, updatePreferences } = usePreferences();
+  const { preferences, updatePreferences, setTheme } = usePreferences();
   const [draft, setDraft] = useState<Preferences | null>(null);
   const [saved, setSaved] = useState(false);
   const form = draft ?? preferences;
@@ -98,9 +98,11 @@ export function SettingsForm() {
               <span className="font-medium">主题</span>
               <Select
                 value={form.theme}
-                onChange={(event) =>
-                  patch({ theme: event.target.value as Preferences["theme"] })
-                }
+                onChange={(event) => {
+                  const theme = event.target.value as Preferences["theme"];
+                  patch({ theme });
+                  setTheme(theme);
+                }}
               >
                 <option value="light">浅色</option>
                 <option value="dark">深色</option>

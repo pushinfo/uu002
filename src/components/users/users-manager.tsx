@@ -46,9 +46,16 @@ export function UsersManager() {
   const loading = useSimulatedLoading();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const urlQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(urlQuery);
+  const [queryFromUrl, setQueryFromUrl] = useState(urlQuery);
   const [role, setRole] = useState<UserRole | "all">("all");
   const [status, setStatus] = useState<UserStatus | "all">("all");
+
+  if (queryFromUrl !== urlQuery) {
+    setQueryFromUrl(urlQuery);
+    setQuery(urlQuery);
+  }
 
   const filtered = useMemo(() => {
     const normalized = query.trim().toLowerCase();

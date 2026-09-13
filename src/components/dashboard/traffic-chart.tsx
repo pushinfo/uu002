@@ -58,10 +58,19 @@ export function TrafficChart() {
                 tickLine={false}
               />
               <YAxis
+                yAxisId="visits"
                 tick={{ fontSize: 12, fill: "var(--muted)" }}
                 axisLine={false}
                 tickLine={false}
                 width={40}
+              />
+              <YAxis
+                yAxisId="signups"
+                orientation="right"
+                tick={{ fontSize: 12, fill: "var(--muted)" }}
+                axisLine={false}
+                tickLine={false}
+                width={32}
               />
               <Tooltip
                 contentStyle={{
@@ -72,6 +81,7 @@ export function TrafficChart() {
                 }}
               />
               <Area
+                yAxisId="visits"
                 type="monotone"
                 dataKey="visits"
                 name="访问"
@@ -80,6 +90,7 @@ export function TrafficChart() {
                 strokeWidth={2}
               />
               <Area
+                yAxisId="signups"
                 type="monotone"
                 dataKey="signups"
                 name="注册"
